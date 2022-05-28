@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TakeCover</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon2.ico" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="container header">
+        <div class="row">
+          <!-- <div class="container col-md-1"></div> -->
+          <div class="container col-md-4 pt-3 logo">
+            <img src="./img/logo.png" alt="Heroes of Newerth" id="logo" />
+            <h3 class="display-5" id="obituary">RIP HoN <br />May 2010 - June 2022</h3>
+          </div>
+          <div class="container col-md-1"></div>
+          <div class="container col-md-6 pt-3 title">
+            <h1 class="display-1 mt-4" id ="title">Take Cover</h1>
+            <h2 class="display-5 mt-4" id="instructions">
+              Press 'E' to dodge the bullets.<br> Refresh the page to try again.
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="row game">
+        <canvas id="canvas1"></canvas>
+      </div>
+    
+      <div class="row justify-content-center">
+        <div class="col-5 startGame" id="startButtonHere">
+      </div>
+      </div>
+      <div class="row">
+      <div class="col tribute">
+        <h2 class="display-5" id="tribute">This game was made as a tribute to <a id="honLink" href="heroesofnewerth.com">Heroes of Newerth</a></h2>
+      </div>
+    </div>
+    </div>
+    <script src="./script/enemy.js"></script>
+    <script src="./script/bullet.js"></script>
+    <script src="./script/player.js"></script>
+    <script src="./script/script.js"></script>
+    
+  </body>
+</html>
