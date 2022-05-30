@@ -51,9 +51,10 @@ app.get("/get-leaderboard", (req, res) => {
 });
 
 app.post("/insert-score", function(req, res) {
-    console.log("user finished the game");
-    // console.log(req.body.data);
-    console.log("name", req.body.name, "score", req.body.score);
+    if (req.body.name == null || req.body.name == "") {
+        res.send({status: "fail", msg: "You didn't enter a name. Your score has not been saved."});
+        return;
+    }
     connection.query("INSERT INTO Leaderboard(name, score) VALUES ('" + req.body.name + "', '" + req.body.score + "')", (err, results) => {
         if (err) {
             res.send({status: "fail", msg: "Sorry, we were unable to upload your score at this time."});
@@ -84,10 +85,10 @@ async function init() {
     var sql = `INSERT INTO Leaderboard(name, score) VALUES ?`; 
     var fakeRecords = [
     ["MoonMeander", "25"], 
-    ["bkid", "23"], 
     ["m'ICKe", "23"], 
-    ["FuzzySloth", "22"],
+    ["Zlapped", "22"],
     ["LivingWeapon", "20"],
+    ["GoreAndBlood", "20"],
     ["BubblesBot", "10"],
     ["EngineerBot", "8"],
     ["SlitherBot", "6"],

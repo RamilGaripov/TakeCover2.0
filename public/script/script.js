@@ -1,8 +1,11 @@
 const canvas = document.querySelector("canvas");
 
-const LOW_SCORE = 5;
-const MEDIUM_SCORE = 10;
-const ADVANCED_SCORE = 15;
+const TRY_AGAIN = 0;
+const BRONZE_SCORE = 4;
+const SILVER_SCORE = 8;
+const GOLD_SCORE = 14;
+const DIAMOND_SCORE = 20;
+const LEGENDARY_SCORE = 30;
 const FRAMES_PER_SECOND = 60;
 
 const ctx = canvas.getContext("2d");
@@ -17,9 +20,6 @@ let score = 0;
 const background = new Image();
 background.src = "./img/background1.png";
 
-
-
-
 window.addEventListener("keydown", function (e) {
   if (e.code === "KeyE") spacePressed = true;
 });
@@ -31,21 +31,45 @@ function handleInjury() {
 
       ctx.fillStyle = "#a0d2eb";
 
-      if (score < LOW_SCORE) {
+      if (score == TRY_AGAIN) {
         ctx.fillText(
-          "You are slow as a turtle! Your score is: " + score + ". Try again!",
+          "Please, it's not that hard. Press 'E' to take cover!",
           150,
           canvas.height / 4
         );
-      } else if (score < MEDIUM_SCORE) {
+      } else if (score < BRONZE_SCORE) {
         ctx.fillText(
-          "Right in your turtle heart! Your score is: " + score + ". Not bad!",
+          score + " points. You belong in the bronze bracket.",
           150,
           canvas.height / 4
         );
-      } else if (score < ADVANCED_SCORE) {
+      } else if (score < SILVER_SCORE) {
         ctx.fillText(
-          "Wow, you are a ninja turtle!! Your score is: " + score + ".",
+          score + " points. Stuck in silver forever.",
+          150,
+          canvas.height / 4
+        );
+      } else if (score < GOLD_SCORE) {
+        ctx.fillText(
+          score + " points. Not too bad. Keep training and one day you'll hit the diamond league.",
+          150,
+          canvas.height / 4
+        );
+      } else if (score < DIAMOND_SCORE) {
+        ctx.fillText(
+          score + " points. \nA solid diamond player. You have potential.",
+          150,
+          canvas.height / 4
+        );
+      } else if (score < LEGENDARY_SCORE) {
+        ctx.fillText(
+          score + " points. Legendary league! Get a proper 5-stack to reach IMMORTAL",
+          150,
+          canvas.height / 4
+        );
+      } else {
+        ctx.fillText(
+          score + " points. IMMORTAL! Your skills are unmatched!",
           150,
           canvas.height / 4
         );
@@ -108,8 +132,9 @@ async function updateScores() {
 
     //take scores and send them to the server
     console.log("We are dead and our score is:", score);
+    const userName = window.prompt("Enter your name:");
     const newScore = {
-      name: "Ramil",
+      name: userName,
       score: score
     };
     const response = await fetch("/insert-score", {
@@ -121,6 +146,7 @@ async function updateScores() {
       body: JSON.stringify(newScore)
     });
     console.log(newScore);
+    getLeaderboard();
   } catch (err) {
     console.log(err);
   }

@@ -58,8 +58,18 @@ caption {
     text-align: left;
 }
 
+#lboard {
+    text-decoration: underline;
+}
+
 th {
-    padding-right: 5rem;
+    font-size: 1.5rem;
+    padding-right: 8rem;
+}
+
+td {
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
 .tribute {
