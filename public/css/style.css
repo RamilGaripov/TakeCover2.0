@@ -5,7 +5,7 @@
 
 body {
     height: 100vh;
-    background-image: url(../img/page-bg3.jpg);
+    background-image: url("/img/page-bg3.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     color: rgb(235, 209, 54);
@@ -46,6 +46,20 @@ body {
 
 #instructions {
     font-size: 2rem;
+}
+
+#leaderboard {
+    /* font-size: large; */
+    margin-top: 3rem;
+}
+
+caption {
+    display: table-caption;
+    text-align: left;
+}
+
+th {
+    padding-right: 5rem;
 }
 
 .tribute {

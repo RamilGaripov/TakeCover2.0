@@ -18,6 +18,8 @@ const background = new Image();
 background.src = "./img/background1.png";
 
 
+
+
 window.addEventListener("keydown", function (e) {
   if (e.code === "KeyE") spacePressed = true;
 });
@@ -62,6 +64,7 @@ document.getElementById("startButtonHere").appendChild(startButton);
 function onLoad() {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
+
   drawSprite(
     playerSprite,
     player.width * player.frameX,
@@ -85,7 +88,11 @@ function onLoad() {
     enemy.height
   );
 
-  if (handleInjury()) return;
+  if (handleInjury()) {
+    console.log("u dead, let's update the scores");
+    updateScores();
+    return;
+  }
 
   ctx.fillStyle = scoreGradient;
   ctx.font = "90px Georgia";
@@ -93,6 +100,30 @@ function onLoad() {
   ctx.fillText(score, 560, 70);
 
   requestAnimationFrame(onLoad);
+}
+
+async function updateScores() {
+  try {
+    //need to prompt player for their name
+
+    //take scores and send them to the server
+    console.log("We are dead and our score is:", score);
+    const newScore = {
+      name: "Ramil",
+      score: score
+    };
+    const response = await fetch("/insert-score", {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newScore)
+    });
+    console.log(newScore);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 const scoreGradient = ctx.createLinearGradient(0, 0, 0, 70);
@@ -104,7 +135,7 @@ scoreGradient.addColorStop("0.9", "rgb(186, 134, 56)");
 let fps, fpsInterval, startTime, now, then, elapsed;
 
 function startAnimating(fps) {
-  console.log("starting the animation at " + fps +"fps.");
+  console.log("starting the animation at " + fps + "fps.");
   fpsInterval = 1000 / fps;
   then = Date.now();
   startTime = then;
@@ -118,11 +149,13 @@ function animate() {
 
   if (elapsed > fpsInterval) {
     frame++;
-    console.log("frame " + frame);
+    // console.log("frame " + frame);
     then = now - (elapsed % fpsInterval);
     if (spacePressed) {
       takeCover();
-      if ((frame - frameTakeCoverComplete) >= FRAMES_SPENT_IN_COVER) {exitCover();}
+      if ((frame - frameTakeCoverComplete) >= FRAMES_SPENT_IN_COVER) {
+        exitCover();
+      }
     }
     handleInjury();
     if (handleInjury()) return;
@@ -130,11 +163,30 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+async function getLeaderboard() {
+  const response = await fetch("/get-leaderboard", {
+    method: "GET"
+  });
+  const data = await response.json();
+  console.log(data);
+  populateLeaderboard(data.rows);
+}
+
+function populateLeaderboard(bestPlayers) {
+  const table = document.getElementsByClassName("name");
+  const score = document.getElementsByClassName("score");
+  for (var i = 0; i < bestPlayers.length; i++) {
+    table[i].textContent = bestPlayers[i].name;
+    score[i].textContent = bestPlayers[i].score;
+  }
+}
+
+
 function startGame() {
   console.log("Let us begin!");
   startAnimating(FRAMES_PER_SECOND);
 }
 
 startButton.addEventListener("click", startGame);
+getLeaderboard();
 onLoad();
-
