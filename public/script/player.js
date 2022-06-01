@@ -18,9 +18,14 @@ const player = {
   }
 
   function takeCover() {
+    
     if (frame % 2 == 0 && player.frameX <= 4) {
+      if (!sfx.cover.playing()) {
+        sfx.cover.play();
+      }
       player.frameX++;
       player.hitbox = false;
+      
     } 
     if (player.frameX == 4) {
       frameTakeCoverComplete = frame;

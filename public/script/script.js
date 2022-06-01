@@ -12,6 +12,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 400;
 
+const GAME_OVER_MSG_Y = canvas.height / 3;
+
 let frame = 0;
 let frameTakeCoverComplete = 0;
 let spacePressed = false;
@@ -24,7 +26,20 @@ window.addEventListener("keydown", function (e) {
   if (e.code === "KeyE") spacePressed = true;
 });
 
+const gameOverMsgArray = [
+  "Please, it's not that hard. Press 'E' to take cover!",
+  " points. You belong in the bronze bracket.",
+  " point(s). Stuck in silver forever.",
+  " points. Not too bad. One day you'll hit the diamond league.",
+  " points. A solid diamond player. You have potential.",
+  " points. Legendary! But are you good enough to be IMMORTAL?",
+  " points. IMMORTAL! Your skills are unmatched!",
+];
+
+var gameOverMsg, msgIndex, metrics, textWidth;
+
 function handleInjury() {
+ 
   for (let i = 0; i < bulletArray.length; i++) {
     if (bulletArray[i].x > 50 && bulletArray[i].x < 150 && player.hitbox) {
       ctx.font = "35px Georgia";
@@ -32,51 +47,45 @@ function handleInjury() {
       ctx.fillStyle = "#a0d2eb";
 
       if (score == TRY_AGAIN) {
-        ctx.fillText(
-          "Please, it's not that hard. Press 'E' to take cover!",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 0; 
       } else if (score < BRONZE_SCORE) {
-        ctx.fillText(
-          score + " points. You belong in the bronze bracket.",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 1; 
       } else if (score < SILVER_SCORE) {
-        ctx.fillText(
-          score + " points. Stuck in silver forever.",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 2; 
       } else if (score < GOLD_SCORE) {
-        ctx.fillText(
-          score + " points. Not too bad. Keep training and one day you'll hit the diamond league.",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 3; 
       } else if (score < DIAMOND_SCORE) {
-        ctx.fillText(
-          score + " points. \nA solid diamond player. You have potential.",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 4; 
       } else if (score < LEGENDARY_SCORE) {
-        ctx.fillText(
-          score + " points. Legendary league! Get a proper 5-stack to reach IMMORTAL",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 5; 
       } else {
-        ctx.fillText(
-          score + " points. IMMORTAL! Your skills are unmatched!",
-          150,
-          canvas.height / 4
-        );
+        msgIndex = 6; 
       }
+      getTextMessage(msgIndex); 
       return true;
     }
   }
+}
+
+//returns the coordinates for the message to be printed out in the centre of the canvas
+function getCentreTextPosition(msg) {
+  metrics = ctx.measureText(msg);
+  textWidth = metrics.width;
+  return (canvas.width - textWidth)/2;
+}
+
+//prints the game over message on the canvas
+function getTextMessage(index) {
+  gameOverMsg = gameOverMsgArray[index];
+  if (score > 0) {
+    gameOverMsg = score + " " + gameOverMsg;
+  }
+  const textPosition = getCentreTextPosition(gameOverMsg);
+  ctx.fillText(
+    gameOverMsg,
+    textPosition,
+    GAME_OVER_MSG_Y
+  );
 }
 
 let startButton = document.createElement("button");
@@ -87,7 +96,6 @@ document.getElementById("startButtonHere").appendChild(startButton);
 
 function onLoad() {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
 
   drawSprite(
     playerSprite,
@@ -113,40 +121,38 @@ function onLoad() {
   );
 
   if (handleInjury()) {
-    console.log("u dead, let's update the scores");
     updateScores();
     return;
   }
 
   ctx.fillStyle = scoreGradient;
   ctx.font = "90px Georgia";
-  ctx.strokeText(score, 560, 70);
-  ctx.fillText(score, 560, 70);
+  ctx.fillText(score, getCentreTextPosition(score), 70);
 
   requestAnimationFrame(onLoad);
 }
 
 async function updateScores() {
   try {
-    //need to prompt player for their name
-
-    //take scores and send them to the server
-    console.log("We are dead and our score is:", score);
-    const userName = window.prompt("Enter your name:");
-    const newScore = {
-      name: userName,
-      score: score
-    };
-    const response = await fetch("/insert-score", {
-      method: "POST",
-      headers: {
+    if (score > 0) {
+      //take scores and send them to the server
+      console.log("We are dead and our score is:", score);
+      const userName = window.prompt("Enter your name:");
+      const newScore = {
+        name: userName,
+        score: score
+      };
+      await fetch("/insert-score", {
+        method: "POST",
+        headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newScore)
-    });
-    console.log(newScore);
-    getLeaderboard();
+        },
+        body: JSON.stringify(newScore)
+      });
+      console.log(newScore);
+      getLeaderboard();
+    }
   } catch (err) {
     console.log(err);
   }
@@ -168,24 +174,35 @@ function startAnimating(fps) {
   animate();
 }
 
+// let reloadTime = Math.floor(Math.random()*120 + 60);
+// var previousShotTime = 0;
+
+// if (previousShotTime + reloadTime === frame){
+//   console.log(speed);
+//   bulletArray.unshift(new Bullet);
+//   sfx.shot.play();
+//   previousShotTime = frame;        
+//   reloadTime = Math.floor(Math.random()*120 + 60);
+// }
+
 function animate() {
   now = Date.now();
   elapsed = now - then;
   shootBullets();
-
   if (elapsed > fpsInterval) {
     frame++;
     // console.log("frame " + frame);
     then = now - (elapsed % fpsInterval);
-    if (spacePressed) {
+    
+    handleInjury();
+    if (handleInjury()) return;
+  }
+  if (spacePressed) {
       takeCover();
       if ((frame - frameTakeCoverComplete) >= FRAMES_SPENT_IN_COVER) {
         exitCover();
       }
     }
-    handleInjury();
-    if (handleInjury()) return;
-  }
   requestAnimationFrame(animate);
 }
 
