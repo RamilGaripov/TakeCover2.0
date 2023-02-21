@@ -32,7 +32,10 @@ class Bullet {
         ctx.drawImage(bulletImg, this.x, this.y, this.width, this.height);
     }
 
-    fly() {
+    bulletFlight() {
+        if (!sfx.cover.playing()) {
+            sfx.cover.play();
+        }
         this.x -= speed;
         if (!this.counted && this.x < player.x) {
             score++;
@@ -44,14 +47,15 @@ class Bullet {
     }
 }
 
-let reloadTime = Math.floor(Math.random()*120 + 60);
-var previousShotTime = 0;
+function createNewBullet() {
+    bulletArray.unshift(new Bullet);
+    shootBullet();
+}
 
-function shootBullets() {
+function shootBullet() {
     
     if (previousShotTime + reloadTime === frame){
         console.log(speed);
-        bulletArray.unshift(new Bullet);
         sfx.shot.play();
         previousShotTime = frame;        
         reloadTime = Math.floor(Math.random()*120 + 60);

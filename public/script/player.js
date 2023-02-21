@@ -30,15 +30,15 @@ const player = {
     if (player.frameX == 4) {
       frameTakeCoverComplete = frame;
     }
-    else if (frameTakeCoverComplete == frame-1){
-      console.log("took cover");
-    }
+    // else if (frameTakeCoverComplete == frame-1){
+    //   console.log("took cover");
+    // }
   }
   
   function exitCover() {
-    if (frame - frameTakeCoverComplete == FRAMES_SPENT_IN_COVER) {
-      console.log("exited cover");
-    }
+    // if (frame - frameTakeCoverComplete == FRAMES_SPENT_IN_COVER) {
+    //   console.log("exited cover");
+    // }
     if (frame % 2 == 0 && player.frameX >= 4 && player.frameX < 8) {
       player.frameX++;
     } else if (player.frameX == 8) {

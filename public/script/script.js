@@ -108,7 +108,7 @@ function onLoad() {
     player.width,
     player.height
   );
-  drawEnemy(
+  drawEnemySprite(
     enemySprite,
     enemy.width * enemy.frameX,
     enemy.height * enemy.frameY,
@@ -185,10 +185,33 @@ function startAnimating(fps) {
 //   reloadTime = Math.floor(Math.random()*120 + 60);
 // }
 
+function getReloadTime() {
+  return Math.floor(Math.random()*120 + 60);
+}
+var previousShotTime = 0;
+
+function getNextShot() {
+  if (previousShotTime + getReloadTime() === frame){
+    console.log(speed);
+    Enemy.shoot();
+    bulletArray.unshift(new Bullet);
+    // sfx.shot.play();
+    previousShotTime = frame;
+  }
+
+  for (let i = 0; i < bulletArray.length; i++) {
+      bulletArray[i].fly(); 
+  }
+
+  if (bulletArray.length > MAX_BULLET_ARRAY_LENGTH){
+      bulletArray.pop(bulletArray[0]);   
+  }
+}
+
 function animate() {
   now = Date.now();
   elapsed = now - then;
-  shootBullets();
+  shootBullet();
   if (elapsed > fpsInterval) {
     frame++;
     // console.log("frame " + frame);
@@ -224,9 +247,7 @@ function populateLeaderboard(bestPlayers) {
   }
 }
 
-
 function startGame() {
-  console.log("Let us begin!");
   startAnimating(FRAMES_PER_SECOND);
 }
 
