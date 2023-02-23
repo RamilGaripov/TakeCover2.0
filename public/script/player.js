@@ -1,51 +1,56 @@
-const FRAMES_SPENT_IN_COVER = 15;
+NUM_FRAMES_IN_COVER = 15;  
+X_POS = 20;
+Y_POS = 100;
+WIDTH = 175;
+HEIGHT = 310;
+X_FRAME = 0;
+Y_FRAME = 0;
 
-const player = {
-    x: 20,
-    y: 100,
-    width: 175,
-    height: 310,
-    frameX: 0,
-    frameY: 0,
-    hitbox: true,
+class Player {
+
+  constructor() {
+    this.x = X_POS;
+    this.y = Y_POS;
+    this.width = WIDTH;
+    this.height = HEIGHT;
+    this.frameX = X_FRAME;
+    this.frameY = Y_FRAME;
+    this.frames_in_cover = NUM_FRAMES_IN_COVER;
+    this.hitbox = true;
+    this.playerSprite = new Image();
+    this.playerSprite.src = "./img/bubbles.png";
   };
   
-  const playerSprite = new Image();
-  playerSprite.src = "./img/bubbles.png";
-  
-  function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
-    ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
+  drawSprite(ctx) {
+    ctx.drawImage(this.playerSprite, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
   }
 
-  function takeCover() {
+  takeCover(frame) {
+    console.log("Taking cover", frame)
     
-    if (frame % 2 == 0 && player.frameX <= 4) {
-      if (!sfx.cover.playing()) {
-        sfx.cover.play();
-      }
-      player.frameX++;
-      player.hitbox = false;
-      
+    if (frame % 2 == 0 && this.frameX <= 4) {
+      this.frameX++;
+      this.hitbox = false; 
     } 
-    if (player.frameX == 4) {
-      frameTakeCoverComplete = frame;
+
+    if (this.frameX == 4) {
+      this.frameTakeCoverComplete = frame;
     }
-    // else if (frameTakeCoverComplete == frame-1){
-    //   console.log("took cover");
-    // }
   }
   
-  function exitCover() {
-    // if (frame - frameTakeCoverComplete == FRAMES_SPENT_IN_COVER) {
+  exitCover(frame) {
+    // if (frame - frameTakeCoverComplete == NUM_FRAMES_IN_COVER) {
     //   console.log("exited cover");
     // }
-    if (frame % 2 == 0 && player.frameX >= 4 && player.frameX < 8) {
-      player.frameX++;
-    } else if (player.frameX == 8) {
-      player.frameX = 0;
-      player.hitbox = true;
+    if (frame % 2 == 0 && this.frameX >= 4 && this.frameX < 8) {
+      this.frameX++;
+    } else if (this.frameX == 8) {
+      this.frameX = 0;
+      this.hitbox = true;
       spacePressed = false;
     }
   }
+
+}
 
   

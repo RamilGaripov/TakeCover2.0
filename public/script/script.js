@@ -14,17 +14,14 @@ canvas.height = 400;
 
 const GAME_OVER_MSG_Y = canvas.height / 3;
 
-let frame = 0;
-let frameTakeCoverComplete = 0;
-let spacePressed = false;
-let score = 0;
+// let score = 0;
 
 const background = new Image();
 background.src = "./img/background1.png";
 
-window.addEventListener("keydown", function (e) {
-  if (e.code === "KeyE") spacePressed = true;
-});
+// window.addEventListener("keydown", function (e) {
+//   if (e.code === "KeyE") spacePressed = true;
+// });
 
 const gameOverMsgArray = [
   "Please, it's not that hard. Press 'E' to take cover!",
@@ -38,7 +35,7 @@ const gameOverMsgArray = [
 
 var gameOverMsg, msgIndex, metrics, textWidth;
 
-function handleInjury() {
+function handleGameOver() {
  
   for (let i = 0; i < bulletArray.length; i++) {
     if (bulletArray[i].x > 50 && bulletArray[i].x < 150 && player.hitbox) {
@@ -96,138 +93,111 @@ document.getElementById("startButtonHere").appendChild(startButton);
 
 function onLoad() {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  
+  
+  // ctx.fillStyle = scoreGradient;
+  // ctx.font = "90px Georgia";
+  // ctx.fillText(score, getCentreTextPosition(score), 70);
 
-  drawSprite(
-    playerSprite,
-    player.width * player.frameX,
-    player.height * player.frameY,
-    player.width,
-    player.height,
-    player.x,
-    player.y,
-    player.width,
-    player.height
-  );
-  drawEnemySprite(
-    enemySprite,
-    enemy.width * enemy.frameX,
-    enemy.height * enemy.frameY,
-    enemy.width,
-    enemy.height,
-    enemy.x,
-    enemy.y,
-    enemy.width,
-    enemy.height
-  );
-
-  if (handleInjury()) {
-    updateScores();
-    return;
-  }
-
-  ctx.fillStyle = scoreGradient;
-  ctx.font = "90px Georgia";
-  ctx.fillText(score, getCentreTextPosition(score), 70);
-
-  requestAnimationFrame(onLoad);
+  // requestAnimationFrame(onLoad);
 }
 
-async function updateScores() {
-  try {
-    if (score > 0) {
-      //take scores and send them to the server
-      console.log("We are dead and our score is:", score);
-      const userName = window.prompt("Enter your name:");
-      const newScore = {
-        name: userName,
-        score: score
-      };
-      await fetch("/insert-score", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newScore)
-      });
-      console.log(newScore);
-      getLeaderboard();
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
+// async function updateScores() {
+//   try {
+//     if (score > 0) {
+//       //take scores and send them to the server
+//       console.log("We are dead and our score is:", score);
+//       const userName = window.prompt("Enter your name:");
+//       const newScore = {
+//         name: userName,
+//         score: score
+//       };
+//       await fetch("/insert-score", {
+//         method: "POST",
+//         headers: {
+//           "Accept": "application/json",
+//           "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify(newScore)
+//       });
+//       console.log(newScore);
+//       getLeaderboard();
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-const scoreGradient = ctx.createLinearGradient(0, 0, 0, 70);
-scoreGradient.addColorStop("0.4", "rgb(235, 235, 56)");
-scoreGradient.addColorStop("0.6", "rgb(235, 209, 54)");
-scoreGradient.addColorStop("0.7", "rgb(235, 209, 54)");
-scoreGradient.addColorStop("0.9", "rgb(186, 134, 56)");
+// const scoreGradient = ctx.createLinearGradient(0, 0, 0, 70);
+// scoreGradient.addColorStop("0.4", "rgb(235, 235, 56)");
+// scoreGradient.addColorStop("0.6", "rgb(235, 209, 54)");
+// scoreGradient.addColorStop("0.7", "rgb(235, 209, 54)");
+// scoreGradient.addColorStop("0.9", "rgb(186, 134, 56)");
 
-let fps, fpsInterval, startTime, now, then, elapsed;
+// let fps, fpsInterval, startTime, now, then, elapsed;
 
 function startAnimating(fps) {
   console.log("starting the animation at " + fps + "fps.");
   fpsInterval = 1000 / fps;
   then = Date.now();
   startTime = then;
-  animate();
+  // animate();
 }
 
-// let reloadTime = Math.floor(Math.random()*120 + 60);
+// // let reloadTime = Math.floor(Math.random()*120 + 60);
+// // var previousShotTime = 0;
+
+// // if (previousShotTime + reloadTime === frame){
+// //   console.log(speed);
+// //   bulletArray.unshift(new Bullet);
+// //   sfx.shot.play();
+// //   previousShotTime = frame;        
+// //   reloadTime = Math.floor(Math.random()*120 + 60);
+// // }
+
+// function getReloadTime() {
+//   return Math.floor(Math.random()*120 + 60);
+// }
 // var previousShotTime = 0;
 
-// if (previousShotTime + reloadTime === frame){
-//   console.log(speed);
-//   bulletArray.unshift(new Bullet);
-//   sfx.shot.play();
-//   previousShotTime = frame;        
-//   reloadTime = Math.floor(Math.random()*120 + 60);
-// }
+// // function getNextShot() {
+// //   if (previousShotTime + getReloadTime() === frame){
+// //     console.log(speed);
+// //     Enemy.shoot();
+// //     // bulletArray.unshift(new Bullet);
+// //     // sfx.shot.play();
+// //     previousShotTime = frame;
+// //   }
 
-function getReloadTime() {
-  return Math.floor(Math.random()*120 + 60);
-}
-var previousShotTime = 0;
+// //   for (let i = 0; i < bulletArray.length; i++) {
+// //       bulletArray[i].fly(); 
+// //   }
 
-function getNextShot() {
-  if (previousShotTime + getReloadTime() === frame){
-    console.log(speed);
-    Enemy.shoot();
-    bulletArray.unshift(new Bullet);
-    // sfx.shot.play();
-    previousShotTime = frame;
-  }
+// //   if (bulletArray.length > MAX_BULLET_ARRAY_LENGTH){
+// //       bulletArray.pop(bulletArray[0]);   
+// //   }
+// // }
 
-  for (let i = 0; i < bulletArray.length; i++) {
-      bulletArray[i].fly(); 
-  }
-
-  if (bulletArray.length > MAX_BULLET_ARRAY_LENGTH){
-      bulletArray.pop(bulletArray[0]);   
-  }
-}
-
-function animate() {
-  now = Date.now();
-  elapsed = now - then;
-  shootBullet();
-  if (elapsed > fpsInterval) {
-    frame++;
-    // console.log("frame " + frame);
-    then = now - (elapsed % fpsInterval);
+// function animate() {
+//   now = Date.now();
+//   elapsed = now - then;
+//   // shootBullet();
+//   if (elapsed > fpsInterval) {
+//     frame++;
+//     // console.log("frame " + frame);
+//     then = now - (elapsed % fpsInterval);
     
-    handleInjury();
-    if (handleInjury()) return;
-  }
-  if (spacePressed) {
-      takeCover();
-      if ((frame - frameTakeCoverComplete) >= FRAMES_SPENT_IN_COVER) {
-        exitCover();
-      }
-    }
-  requestAnimationFrame(animate);
-}
+//     handleInjury();
+//     if (handleInjury()) return;
+//   }
+//   if (spacePressed) {
+//       player.takeCover(frame);
+//       if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
+//         player.exitCover(frame);
+//       }
+//     }
+//   requestAnimationFrame(animate);
+// }
 
 async function getLeaderboard() {
   const response = await fetch("/get-leaderboard", {
@@ -248,7 +218,10 @@ function populateLeaderboard(bestPlayers) {
 }
 
 function startGame() {
-  startAnimating(FRAMES_PER_SECOND);
+  gameSession = new GameSession();
+  while (gameSession.gameInProgress) {
+    animate(FRAMES_PER_SECOND);
+  }
 }
 
 startButton.addEventListener("click", startGame);
