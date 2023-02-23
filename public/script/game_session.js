@@ -1,29 +1,14 @@
-const canvas = document.querySelector("canvas");
-
-const TRY_AGAIN = 0;
-const BRONZE_SCORE = 4;
-const SILVER_SCORE = 8;
-const GOLD_SCORE = 14;
-const DIAMOND_SCORE = 20;
-const LEGENDARY_SCORE = 30;
-const FRAMES_PER_SECOND = 60;
-
-const ctx = canvas.getContext("2d");
-canvas.width = 1200;
-canvas.height = 400;
-
-const GAME_OVER_MSG_Y = canvas.height / 3;
-
 class GameSession {
   constructor() {
     this.gameInProgress = true;
+    this.paused = false;
     this.player = new Player();
     this.enemy = new Enemy();
-    animate();
   }
 
-  animate() {
-    console.log("Starting animation now.")
+  setupGameEnvironment(ctx, fps) {
+    this.player.drawSprite(ctx);
+    this.enemy.drawSprite(ctx);
   }
 }
 

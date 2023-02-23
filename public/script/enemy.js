@@ -9,28 +9,24 @@ class Enemy {
         this.height = 304;
         this.frameX = 0;
         this.frameY = 0;
-
-        drawEnemySprite();
     }
 
-
-
-    drawEnemySprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
-        ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
+    drawEnemySprite(ctx) {
+        ctx.drawImage(this.enemySprite, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
     };
 
-    shoot() {
-        if (frame % 2 == 0 && player.frameX <= 4) {
-            if (!sfx.cover.playing()) {
-              sfx.cover.play();
-            }
-            player.frameX++;
-            player.hitbox = false;
+    // shoot() {
+    //     if (frame % 2 == 0 && player.frameX <= 4) {
+    //         if (!sfx.cover.playing()) {
+    //           sfx.cover.play();
+    //         }
+    //         player.frameX++;
+    //         player.hitbox = false;
             
-          } 
-          if (player.frameX == 4) {
-            frameTakeCoverComplete = frame;
-          }
-    }
+    //       } 
+    //       if (player.frameX == 4) {
+    //         frameTakeCoverComplete = frame;
+    //       }
+    // }
 }
 

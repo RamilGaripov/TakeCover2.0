@@ -77,30 +77,41 @@ function getTextMessage(index) {
   if (score > 0) {
     gameOverMsg = score + " " + gameOverMsg;
   }
-  const textPosition = getCentreTextPosition(gameOverMsg);
   ctx.fillText(
     gameOverMsg,
-    textPosition,
+    getCentreTextPosition(gameOverMsg),
     GAME_OVER_MSG_Y
   );
 }
 
-let startButton = document.createElement("button");
-startButton.setAttribute("class", "btn btn-info");
-startButton.setAttribute("id", "startGame");
-startButton.innerHTML = "Start Game";
-document.getElementById("startButtonHere").appendChild(startButton);
-
-function onLoad() {
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  
+function addStartButton() {
+  let startButton = document.createElement("button");
+  startButton.setAttribute("class", "btn btn-info");
+  startButton.setAttribute("id", "startGame");
+  startButton.innerHTML = "Start Game";
+  document.getElementById("startButtonHere").appendChild(startButton);
+  startButton.addEventListener("click", startGame);
+}
   
   // ctx.fillStyle = scoreGradient;
   // ctx.font = "90px Georgia";
   // ctx.fillText(score, getCentreTextPosition(score), 70);
 
   // requestAnimationFrame(onLoad);
+
+function onLoad() {
+  getLeaderboard();
+  addStartButton();
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  gameSession = new GameSession();
+  gameSession.setupGameEnvironment(ctx, FRAMES_PER_SECOND)
 }
+
+// function startGame() {
+//   while (gameSession.gameInProgress && !gameSession.paused) {
+//     gameSession.animate(ctx, FRAMES_PER_SECOND);
+//   }
+// }
 
 // async function updateScores() {
 //   try {
@@ -136,13 +147,13 @@ function onLoad() {
 
 // let fps, fpsInterval, startTime, now, then, elapsed;
 
-function startAnimating(fps) {
-  console.log("starting the animation at " + fps + "fps.");
-  fpsInterval = 1000 / fps;
-  then = Date.now();
-  startTime = then;
-  // animate();
-}
+// function startAnimating(fps) {
+//   console.log("starting the animation at " + fps + "fps.");
+//   fpsInterval = 1000 / fps;
+//   then = Date.now();
+//   startTime = then;
+//   // animate();
+// }
 
 // // let reloadTime = Math.floor(Math.random()*120 + 60);
 // // var previousShotTime = 0;
@@ -217,13 +228,4 @@ function populateLeaderboard(bestPlayers) {
   }
 }
 
-function startGame() {
-  gameSession = new GameSession();
-  while (gameSession.gameInProgress) {
-    animate(FRAMES_PER_SECOND);
-  }
-}
-
-startButton.addEventListener("click", startGame);
-getLeaderboard();
 onLoad();
