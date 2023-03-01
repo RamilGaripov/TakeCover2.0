@@ -122,12 +122,13 @@ function startGame() {
   
   console.log("starting the animation at " + FRAMES_PER_SECOND + "fps.");
   framePeriod = 1000 / FRAMES_PER_SECOND;
-  then = Date.now();
-  startTime = then;
+  startTime = Date.now();
   
-  while (gameSession.gameInProgress && !gameSession.paused) {
-    gameSession.animate(framePeriod);
-  }
+  // while (gameSession.gameInProgress && !gameSession.paused) {
+  //   gameSession.animate(framePeriod);
+  // }
+  
+  gameSession.animate(framePeriod);
 }
 
 // async function updateScores() {

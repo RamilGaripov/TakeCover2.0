@@ -1,3 +1,4 @@
+frame = 0;
 class GameSession {
   
   constructor() {
@@ -5,6 +6,7 @@ class GameSession {
     this.paused = false;
     this.player = new Player();
     this.enemy = new Enemy();
+    this.frame = 0;
   
   }
 
@@ -20,27 +22,27 @@ class GameSession {
     this.enemy.drawSprite(ctx);
   }
 
-  animate(framePeriod) {
-    // console.log(framePeriod)
-    // console.log(then)
-      // now = Date.now();
-      // elapsed = now - then;
-      // // shootBullet();
-      // if (elapsed > framePeriod) {
-      //   frame++;
-      //   // console.log("frame " + frame);
-      //   then = now - (elapsed % framePeriod);
+  animate(startTime, framePeriod) {
+    
+      let now = Date.now();
+      let elapsed = now - startTime;
+      // shootBullet();
+      if (elapsed > framePeriod) {
+        frame++;
+        // console.log("frame " + frame);
+        startTime = now - (elapsed % framePeriod);
         
-      //   handleInjury();
-      //   if (handleInjury()) return;
-      // }
+        // handleInjury();
+        // if (handleInjury()) return;
+      }
       // if (spacePressed) {
       //     player.takeCover(frame);
       //     if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
       //       player.exitCover(frame);
       //     }
       //   }
-      // requestAnimationFrame(animate);
+      console.log(frame)
+      requestAnimationFrame(this.animate(startTime, framePeriod));
     }
 
   
