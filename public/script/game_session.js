@@ -1,15 +1,49 @@
 class GameSession {
+  
   constructor() {
     this.gameInProgress = true;
     this.paused = false;
     this.player = new Player();
     this.enemy = new Enemy();
+  
   }
 
-  setupGameEnvironment(ctx, fps) {
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new GameSession();
+    }
+    return this.instance;
+  }
+
+  setupGameEnvironment(ctx) {
     this.player.drawSprite(ctx);
     this.enemy.drawSprite(ctx);
   }
+
+  animate(framePeriod) {
+    // console.log(framePeriod)
+    // console.log(then)
+      // now = Date.now();
+      // elapsed = now - then;
+      // // shootBullet();
+      // if (elapsed > framePeriod) {
+      //   frame++;
+      //   // console.log("frame " + frame);
+      //   then = now - (elapsed % framePeriod);
+        
+      //   handleInjury();
+      //   if (handleInjury()) return;
+      // }
+      // if (spacePressed) {
+      //     player.takeCover(frame);
+      //     if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
+      //       player.exitCover(frame);
+      //     }
+      //   }
+      // requestAnimationFrame(animate);
+    }
+
+  
 }
 
 // let frame = 0;
@@ -197,26 +231,7 @@ class GameSession {
 // //   }
 // // }
 
-// function animate() {
-//   now = Date.now();
-//   elapsed = now - then;
-//   // shootBullet();
-//   if (elapsed > fpsInterval) {
-//     frame++;
-//     // console.log("frame " + frame);
-//     then = now - (elapsed % fpsInterval);
-    
-//     handleInjury();
-//     if (handleInjury()) return;
-//   }
-//   if (spacePressed) {
-//       player.takeCover(frame);
-//       if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
-//         player.exitCover(frame);
-//       }
-//     }
-//   requestAnimationFrame(animate);
-// }
+// 
 
 // async function getLeaderboard() {
 //   const response = await fetch("/get-leaderboard", {

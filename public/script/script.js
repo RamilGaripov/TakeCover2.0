@@ -1,4 +1,9 @@
 const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = 1200;
+canvas.height = 400;
+
+const FRAMES_PER_SECOND = 60;
 
 const TRY_AGAIN = 0;
 const BRONZE_SCORE = 4;
@@ -6,18 +11,21 @@ const SILVER_SCORE = 8;
 const GOLD_SCORE = 14;
 const DIAMOND_SCORE = 20;
 const LEGENDARY_SCORE = 30;
-const FRAMES_PER_SECOND = 60;
 
-const ctx = canvas.getContext("2d");
-canvas.width = 1200;
-canvas.height = 400;
 
 const GAME_OVER_MSG_Y = canvas.height / 3;
 
 // let score = 0;
 
-const background = new Image();
+const background = new Image(60, 45);
 background.src = "./img/background1.png";
+
+function drawBackground() {
+  console.log("HELLO")
+  canvas.width = this.naturalWidth;
+  canvas.height = this.naturalHeight;
+  ctx.drawImage(this, 0, 0);
+}
 
 // window.addEventListener("keydown", function (e) {
 //   if (e.code === "KeyE") spacePressed = true;
@@ -102,16 +110,25 @@ function addStartButton() {
 function onLoad() {
   getLeaderboard();
   addStartButton();
+  background.onload = drawBackground;
+
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  gameSession = new GameSession();
-  gameSession.setupGameEnvironment(ctx, FRAMES_PER_SECOND)
+  gameSession = GameSession.getInstance();
+  gameSession.setupGameEnvironment(ctx)
 }
 
-// function startGame() {
-//   while (gameSession.gameInProgress && !gameSession.paused) {
-//     gameSession.animate(ctx, FRAMES_PER_SECOND);
-//   }
-// }
+function startGame() {
+  console.log(gameSession);
+  
+  console.log("starting the animation at " + FRAMES_PER_SECOND + "fps.");
+  framePeriod = 1000 / FRAMES_PER_SECOND;
+  then = Date.now();
+  startTime = then;
+  
+  while (gameSession.gameInProgress && !gameSession.paused) {
+    gameSession.animate(framePeriod);
+  }
+}
 
 // async function updateScores() {
 //   try {
@@ -152,7 +169,7 @@ function onLoad() {
 //   fpsInterval = 1000 / fps;
 //   then = Date.now();
 //   startTime = then;
-//   // animate();
+//   animate();
 // }
 
 // // let reloadTime = Math.floor(Math.random()*120 + 60);

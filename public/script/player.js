@@ -1,28 +1,44 @@
-NUM_FRAMES_IN_COVER = 15;  
-X_POS = 20;
-Y_POS = 100;
-WIDTH = 175;
-HEIGHT = 310;
-X_FRAME = 0;
-Y_FRAME = 0;
+// NUM_FRAMES_IN_COVER = 15;  
+// X_POS = 20;
+// Y_POS = 100;
+// WIDTH = 175;
+// HEIGHT = 310;
+// X_FRAME = 0;
+// Y_FRAME = 0;
+
+
 
 class Player {
 
   constructor() {
-    this.x = X_POS;
-    this.y = Y_POS;
-    this.width = WIDTH;
-    this.height = HEIGHT;
-    this.frameX = X_FRAME;
-    this.frameY = Y_FRAME;
-    this.frames_in_cover = NUM_FRAMES_IN_COVER;
+    this.x = 20;
+    this.y = 150;
+    this.width = 175;
+    this.height = 310;
+    this.frameX = 0;
+    this.frameY = 0;
+    this.frames_in_cover = 15;
     this.hitbox = true;
-    this.playerSprite = new Image();
-    this.playerSprite.src = "./img/bubbles.png";
+    this.sprite = new Image();
+    this.sprite.src = "./img/bubbles.png";    
   };
-  
+
   drawSprite(ctx) {
-    ctx.drawImage(this.playerSprite, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
+    const player = this.sprite;
+    const width = this.width;
+    const height = this.height;
+    const widthFrameX =  width * this.frameX;
+    const heightFrameY = height * this.frameY;
+    const x = this.x;
+    const y = this.y;
+
+    this.sprite.onload = function() {
+      ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
+    }
+
+    // ctx.drawImage(this, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
+    // ctx.drawImage(this, 50, canvas.height - this.height, this.width, this.height, this.x, this.y, this.width, this.height);
+    // ctx.drawImage(this.playerSprite, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
   }
 
   takeCover(frame) {
@@ -53,4 +69,7 @@ class Player {
 
 }
 
+
+// const player = new Player();
+// player.drawSprite();
   

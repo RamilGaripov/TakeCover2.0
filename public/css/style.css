@@ -23,7 +23,9 @@ body {
 
 #canvas1 {
     width: 1200px;
-    height: 400px;
+    height: 400px;    
+    padding-right: 0;
+    padding-left: 0;
     border: 5px solid rgb(160, 210, 235);
     position: absolute;
     top: 50%;
