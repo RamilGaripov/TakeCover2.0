@@ -24,12 +24,10 @@ class Player {
   };
 
   drawSprite(ctx) {
-    console.log("DRAWING SPRITE")
     const player = this.sprite;
     const width = this.width;
     const height = this.height;
     const widthFrameX =  width * this.frameX;
-    console.log("X: ", this.frameX)
     const heightFrameY = height * this.frameY;
     const x = this.x;
     const y = this.y;
@@ -37,32 +35,28 @@ class Player {
     this.sprite.onload = function() {
       ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
     }
-
     ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
-
-    // ctx.drawImage(this, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
-    // ctx.drawImage(this, 50, canvas.height - this.height, this.width, this.height, this.x, this.y, this.width, this.height);
-    // ctx.drawImage(this.playerSprite, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
   }
 
-  takeCover(frame) {
-    console.log("Taking cover", frame)
-    this.drawSprite();
+  takeCover(frame, ctx) {
     if (frame % 2 == 0 && this.frameX <= 4) {
       this.frameX++;
       this.hitbox = false; 
       
+      this.drawSprite(ctx);
     } 
 
     if (this.frameX == 4) {
       this.frameTakeCoverComplete = frame;
+      // this.exitCover(frame, ctx)
     }
   }
   
-  exitCover(frame) {
+  exitCover(frame, ctx) {
     // if (frame - frameTakeCoverComplete == NUM_FRAMES_IN_COVER) {
     //   console.log("exited cover");
     // }
+    this.drawSprite(ctx);
     if (frame % 2 == 0 && this.frameX >= 4 && this.frameX < 8) {
       this.frameX++;
     } else if (this.frameX == 8) {

@@ -106,7 +106,7 @@ function addStartButton() {
     addPauseButton();
     
     // gameSession.step(framePeriod);
-    gameSession.startGame();
+    gameSession.startGame(startTime, framePeriod);
     // gameSession.myMove();
     // gameSession.animate(startTime, framePeriod);
   });

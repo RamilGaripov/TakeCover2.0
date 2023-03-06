@@ -8,7 +8,7 @@ window.addEventListener("keydown", function (e) {
     spacePressed = true;
   }
 });
-// let framePeriod = 100/6;
+
 class GameSession {
   
   constructor() {
@@ -16,8 +16,8 @@ class GameSession {
     // this.paused = false;
     this.player;
     this.enemy;
+    // this.framePeriod = 1000/FRAMES_PER_SECOND;
     // this.frameNum = 0;
- 
   }
 
   static getInstance() {
@@ -35,65 +35,69 @@ class GameSession {
     
   }
 
-  startGame() {
+  startGame(startTime, framePeriod) {
     console.log("Starting/resuming game.");
     paused = false;
-    this.myMove();
+    this.animate(startTime, framePeriod)
   }
 
-  myMove() {
-    let id = null;
-    clearInterval(id);
-    id = setInterval(frame, 1000/FRAMES_PER_SECOND);
-    const player = this.player;
-    console.log(paused)
-    const gameProgress = this.gameInProgress;
-    function frame() {
+  // startGame() {
+  //   console.log("Starting/resuming game.");
+  //   paused = false;
+  //   this.myMove();
+  // }
 
-      if (paused) {
-        clearInterval(id);
-      } else {
-        frameNum++;
-        console.log(frameNum)
-        if (spacePressed) {
-          
-          player.takeCover(frameNum);
-          
-        }
-      }
-    }
+  // myMove() {
+  //   let id = null;
+  //   clearInterval(id);
+  //   id = setInterval(frame, 1000/FRAMES_PER_SECOND);
+  //   const player = this.player;
+  //   player.drawSprite(ctx);
+
+  //   console.log(paused)
+  //   function frame() {
+
+  //     if (paused) {
+  //       clearInterval(id);
+  //     } else {
+  //       frameNum++;
+  //       console.log(frameNum)
+  //       if (spacePressed) {
+  //         player.takeCover(frameNum, ctx);
+  //       }
+  //     }
+  //   }
 
     
-  }
+  // }
 
-  // animate(startTime, framePeriod) {
-  //   // console.log(startTime, framePeriod, this.paused, this.gameInProgress)
-  //   if (this.paused || !this.gameInProgress) {
-  //     console.log('done')
-  //     return;
-  //   }
-  //     let now = Date.now();
-  //     let elapsed = now - startTime;
-  //     console.log(elapsed)
-  //     // shootBullet();
-  //     if (elapsed > framePeriod) {
-  //       console.log("HELLO")
-  //       frame++;
-  //       // console.log("frame " + frame);
-  //       startTime = now - (elapsed % framePeriod);
+  animate(startTime, framePeriod) {
+    if (this.paused) {
+      console.log('done')
+      return;
+    }
+      let now = Date.now();
+      let elapsed = now - startTime;
+      console.log(elapsed)
+      // shootBullet();
+      if (elapsed > framePeriod) {
+        console.log("HELLO")
+        frameNum++;
+        // console.log("frame " + frame);
+        startTime = now - (elapsed % framePeriod);
         
-  //       console.log(frame)
-  //       // handleInjury();
-  //       // if (handleInjury()) return;
-  //     }
-  //     // if (spacePressed) {
-  //     //     player.takeCover(frame);
-  //     //     if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
-  //     //       player.exitCover(frame);
-  //     //     }
-  //     //   }
-  //     requestAnimationFrame(this.animate(startTime, framePeriod));
-  //   }
+        console.log("frame:", frameNum)
+        // handleInjury();
+        // if (handleInjury()) return;
+      }
+      // if (spacePressed) {
+      //     player.takeCover(frame);
+      //     if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
+      //       player.exitCover(frame);
+      //     }
+      //   }
+      requestAnimationFrame(this.animate(startTime, framePeriod));
+    }
 
   pause() {
     
