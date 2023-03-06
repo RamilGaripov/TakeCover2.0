@@ -24,10 +24,12 @@ class Player {
   };
 
   drawSprite(ctx) {
+    console.log("DRAWING SPRITE")
     const player = this.sprite;
     const width = this.width;
     const height = this.height;
     const widthFrameX =  width * this.frameX;
+    console.log("X: ", this.frameX)
     const heightFrameY = height * this.frameY;
     const x = this.x;
     const y = this.y;
@@ -36,6 +38,8 @@ class Player {
       ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
     }
 
+    ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
+
     // ctx.drawImage(this, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
     // ctx.drawImage(this, 50, canvas.height - this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     // ctx.drawImage(this.playerSprite, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
@@ -43,10 +47,11 @@ class Player {
 
   takeCover(frame) {
     console.log("Taking cover", frame)
-    
+    this.drawSprite();
     if (frame % 2 == 0 && this.frameX <= 4) {
       this.frameX++;
       this.hitbox = false; 
+      
     } 
 
     if (this.frameX == 4) {

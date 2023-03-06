@@ -27,9 +27,6 @@ function drawBackground() {
   ctx.drawImage(this, 0, 0);
 }
 
-// window.addEventListener("keydown", function (e) {
-//   if (e.code === "KeyE") spacePressed = true;
-// });
 
 const gameOverMsgArray = [
   "Please, it's not that hard. Press 'E' to take cover!",
@@ -93,12 +90,38 @@ function getTextMessage(index) {
 }
 
 function addStartButton() {
-  let startButton = document.createElement("button");
-  startButton.setAttribute("class", "btn btn-info");
-  startButton.setAttribute("id", "startGame");
-  startButton.innerHTML = "Start Game";
-  document.getElementById("startButtonHere").appendChild(startButton);
-  startButton.addEventListener("click", startGame);
+  // let startButton = document.createElement("button");
+  // startButton.setAttribute("class", "btn btn-info");
+  // startButton.setAttribute("id", "startGame");
+  // startButton.innerHTML = "Start Game";
+  // document.getElementById("startButtonHere").appendChild(startButton);
+  const startButton = document.getElementById("startGame");
+  startButton.addEventListener("click", function() {
+    startButton.style.display="none";
+    console.log("starting the animation at " + FRAMES_PER_SECOND + "fps.");
+    framePeriod = 1000 / FRAMES_PER_SECOND;
+    startTime = Date.now();
+
+    pauseButton = document.getElementById("pauseGame");
+    addPauseButton();
+    
+    // gameSession.step(framePeriod);
+    gameSession.startGame();
+    // gameSession.myMove();
+    // gameSession.animate(startTime, framePeriod);
+  });
+}
+
+function addPauseButton() {
+  const pauseButton = document.getElementById("pauseGame");
+  pauseButton.style.display="block";
+  pauseButton.addEventListener("click", function() {
+    const startButton = document.getElementById("startGame");
+    startButton.style.display="block";
+    pauseButton.style.display="none";
+    console.log("Pausing the game");
+    gameSession.pause();
+  });
 }
   
   // ctx.fillStyle = scoreGradient;
@@ -117,19 +140,7 @@ function onLoad() {
   gameSession.setupGameEnvironment(ctx)
 }
 
-function startGame() {
-  console.log(gameSession);
-  
-  console.log("starting the animation at " + FRAMES_PER_SECOND + "fps.");
-  framePeriod = 1000 / FRAMES_PER_SECOND;
-  startTime = Date.now();
-  
-  // while (gameSession.gameInProgress && !gameSession.paused) {
-  //   gameSession.animate(framePeriod);
-  // }
-  
-  gameSession.animate(framePeriod);
-}
+
 
 // async function updateScores() {
 //   try {

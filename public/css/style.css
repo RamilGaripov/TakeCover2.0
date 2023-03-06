@@ -98,7 +98,7 @@ td {
 
 }
 
-#startGame {
+#startGame, #pauseGame {
     height: 100%;
     min-width: 150px;
     width: 50%;
@@ -107,6 +107,12 @@ td {
     background-color: rgb(160, 210, 235);
     font-weight: 500;
 }
+
+#pauseGame {
+    display: none;
+}
+
+
 
 #startGame:hover {
     background-color: #000;
