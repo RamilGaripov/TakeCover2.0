@@ -1,10 +1,10 @@
 const bulletArray = [];
 const MAX_BULLET_ARRAY_LENGTH = 20;
 
-const bulletImg = new Image();
-bulletImg.src = "./img/bullet.png";
-
+// const bulletImg = new Image();
+// bulletImg.src = "./img/bullet.png";
 var speed = 15;
+
 
 var sfx = {
     shot: new Howl({
@@ -17,15 +17,16 @@ var sfx = {
     })
 }
 
-class Bullet {
+class Bullet extends GameObject {
 
     constructor() {
         this.x = 800;
         this.y = 220;
         this.width = 50;
         this.height = 30;
-        speed++;
+        this.speed = 15;
         this.counted = false;
+        this.sprite.src = "./img/bullet.png";
     };
 
     drawBullet() {

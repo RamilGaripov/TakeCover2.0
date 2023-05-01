@@ -1,15 +1,24 @@
 
-class Enemy {
+// {
+//     x: this.x,
+//     y: this.y,
+//     width: this.width,
+//     height: this.height,
+//     frameX: this.frameX,
+//     frameY: this.frameY,
+//     spriteSrc: this.sprite.src
+// }
+class Enemy extends GameObject {
     constructor() {
-        
+        super()
         this.x = 50;
         this.y = 150;
         this.width = 350;
         this.height = 304;
         this.frameX = 0;
         this.frameY = 0;
-        this.sprite = new Image();
         this.sprite.src = "./img/flint_sprite.png";
+        console.log("Enemy sprite src:", this.sprite.src);
     }
 
     drawSprite(ctx) {

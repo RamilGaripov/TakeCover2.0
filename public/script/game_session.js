@@ -1,6 +1,4 @@
-let frameNum = 0;
 let spacePressed;
-let paused = false;
 
 window.addEventListener("keydown", function (e) {
   if (e.code === "KeyE") {
@@ -13,10 +11,13 @@ class GameSession {
   
   constructor() {
     this.gameInProgress = true;
-    // this.paused = false;
+    this.paused = false;
     this.player;
     this.enemy;
-    // this.framePeriod = 1000/FRAMES_PER_SECOND;
+    this.framePeriod = 1000/FRAMES_PER_SECOND;
+    this.frameNum = 0;
+    this.start;
+    this.previousTimeStamp;
     // this.frameNum = 0;
   }
 
@@ -30,15 +31,55 @@ class GameSession {
   setupGameEnvironment(ctx) {
     this.player = new Player();
     this.enemy = new Enemy();
+    
     this.player.drawSprite(ctx);
     this.enemy.drawSprite(ctx);
-    
   }
 
-  startGame(startTime, framePeriod) {
+  startGame(ctx) {
     console.log("Starting/resuming game.");
-    paused = false;
-    this.animate(startTime, framePeriod)
+    console.log("Gamesession object", this);
+    this.paused = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(this.animate.bind(this));
+  }
+
+  animate(timestamp) {
+    if (this.start === undefined) {
+      this.start = timestamp;
+    }
+    
+    const elapsed = timestamp - this.start;
+    if (elapsed > this.framePeriod) {
+      this.frameNum++;
+      console.log(this.frameNum);
+    }
+    if (elapsed < 10000) {
+      this.previousTimeStamp = timestamp;
+      if (!this.paused) {
+        window.requestAnimationFrame(this.animate.bind(this));
+      }
+    }
+    
+    this.player.drawSprite(ctx);
+
+    // console.log(elapsed)
+    // shootBullet();
+    // if (elapsed > this.framePeriod) {
+    //   this.frameNum++;
+    //   // console.log("frame " + frame);
+    //   startTime = now - (elapsed % framePeriod);
+    //   console.log("frame:", this.frameNum)
+    //   // handleInjury();
+    //   // if (handleInjury()) return;
+    // }
+      // if (spacePressed) {
+      //     player.takeCover(frame);
+      //     if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
+      //       player.exitCover(frame);
+      //     }
+      //   }
+    
   }
 
   // startGame() {
@@ -71,37 +112,10 @@ class GameSession {
     
   // }
 
-  animate(startTime, framePeriod) {
-    if (this.paused) {
-      console.log('done')
-      return;
-    }
-      let now = Date.now();
-      let elapsed = now - startTime;
-      console.log(elapsed)
-      // shootBullet();
-      if (elapsed > framePeriod) {
-        console.log("HELLO")
-        frameNum++;
-        // console.log("frame " + frame);
-        startTime = now - (elapsed % framePeriod);
-        
-        console.log("frame:", frameNum)
-        // handleInjury();
-        // if (handleInjury()) return;
-      }
-      // if (spacePressed) {
-      //     player.takeCover(frame);
-      //     if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
-      //       player.exitCover(frame);
-      //     }
-      //   }
-      requestAnimationFrame(this.animate(startTime, framePeriod));
-    }
+
 
   pause() {
-    
-    paused = true;
+    this.paused = true;
     this.gameInProgress = false;
     // console.log("PAUSED", this.paused)
   }

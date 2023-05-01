@@ -1,30 +1,32 @@
-const canvas = document.querySelector("canvas");
+const CANVAS_WIDTH = 1200;
+const CANVAS_HEIGHT = 400;
+
+const bgCanvas = document.getElementById("backgroundCanvas");
+const bgCtx = backgroundCanvas.getContext("2d");
+
+const canvas = document.getElementById("actionCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 1200;
-canvas.height = 400;
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 
 const FRAMES_PER_SECOND = 60;
-
 const TRY_AGAIN = 0;
 const BRONZE_SCORE = 4;
 const SILVER_SCORE = 8;
 const GOLD_SCORE = 14;
 const DIAMOND_SCORE = 20;
 const LEGENDARY_SCORE = 30;
-
-
 const GAME_OVER_MSG_Y = canvas.height / 3;
-
-// let score = 0;
 
 const background = new Image(60, 45);
 background.src = "./img/background1.png";
 
 function drawBackground() {
-  console.log("HELLO")
   canvas.width = this.naturalWidth;
   canvas.height = this.naturalHeight;
-  ctx.drawImage(this, 0, 0);
+  bgCanvas.width = this.naturalWidth;
+  bgCanvas.height = this.naturalHeight;
+  bgCtx.drawImage(this, 0, 0);
 }
 
 
@@ -90,25 +92,11 @@ function getTextMessage(index) {
 }
 
 function addStartButton() {
-  // let startButton = document.createElement("button");
-  // startButton.setAttribute("class", "btn btn-info");
-  // startButton.setAttribute("id", "startGame");
-  // startButton.innerHTML = "Start Game";
-  // document.getElementById("startButtonHere").appendChild(startButton);
   const startButton = document.getElementById("startGame");
   startButton.addEventListener("click", function() {
     startButton.style.display="none";
-    console.log("starting the animation at " + FRAMES_PER_SECOND + "fps.");
-    framePeriod = 1000 / FRAMES_PER_SECOND;
-    startTime = Date.now();
-
-    pauseButton = document.getElementById("pauseGame");
     addPauseButton();
-    
-    // gameSession.step(framePeriod);
-    gameSession.startGame(startTime, framePeriod);
-    // gameSession.myMove();
-    // gameSession.animate(startTime, framePeriod);
+    gameSession.startGame(ctx);
   });
 }
 
@@ -135,9 +123,10 @@ function onLoad() {
   addStartButton();
   background.onload = drawBackground;
 
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  // bufferCtx.drawImage(background, 0, 0, canvas.width, canvas.height);
   gameSession = GameSession.getInstance();
-  gameSession.setupGameEnvironment(ctx)
+  gameSession.setupGameEnvironment(ctx);
+  // gameSession.setupPlayerAndEnemy(ctx);
 }
 
 

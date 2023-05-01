@@ -8,9 +8,10 @@
 
 
 
-class Player {
+class Player extends GameObject {
 
   constructor() {
+    super()
     this.x = 20;
     this.y = 150;
     this.width = 175;
@@ -19,7 +20,6 @@ class Player {
     this.frameY = 0;
     this.frames_in_cover = 15;
     this.hitbox = true;
-    this.sprite = new Image();
     this.sprite.src = "./img/bubbles.png";    
   };
 
