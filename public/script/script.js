@@ -1,13 +1,31 @@
-const CANVAS_WIDTH = 1200;
-const CANVAS_HEIGHT = 400;
+class UI {
+  constructor() {
+    console.log("HELLOOOO")
+    const CANVAS_WIDTH = 1200;
+    const CANVAS_HEIGHT = 400;
+  
+    const bgCanvas = document.getElementById("backgroundCanvas");
+    const bgCtx = backgroundCanvas.getContext("2d");
+  
+    const canvas = document.getElementById("actionCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
 
-const bgCanvas = document.getElementById("backgroundCanvas");
-const bgCtx = backgroundCanvas.getContext("2d");
+  }
+}
 
-const canvas = document.getElementById("actionCanvas");
-const ctx = canvas.getContext("2d");
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
+UI()
+// const CANVAS_WIDTH = 1200;
+// const CANVAS_HEIGHT = 400;
+
+// const bgCanvas = document.getElementById("backgroundCanvas");
+// const bgCtx = backgroundCanvas.getContext("2d");
+
+// const canvas = document.getElementById("actionCanvas");
+// const ctx = canvas.getContext("2d");
+// canvas.width = CANVAS_WIDTH;
+// canvas.height = CANVAS_HEIGHT;
 
 const FRAMES_PER_SECOND = 60;
 const TRY_AGAIN = 0;
