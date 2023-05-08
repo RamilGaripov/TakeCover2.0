@@ -56,7 +56,6 @@ function createNewBullet() {
 function shootBullet() {
     
     if (previousShotTime + reloadTime === frame){
-        console.log(speed);
         sfx.shot.play();
         previousShotTime = frame;        
         reloadTime = Math.floor(Math.random()*120 + 60);

@@ -18,23 +18,22 @@ class Enemy extends GameObject {
         this.frameX = 0;
         this.frameY = 0;
         this.sprite.src = "./img/flint_sprite.png";
-        console.log("Enemy sprite src:", this.sprite.src);
     }
 
-    drawSprite(ctx) {
+    // drawSprite(ui) {
         
-        const enemy = this.sprite;
-        const width = this.width;
-        const height = this.height;
-        const widthFrameX =  width * this.frameX;
-        const heightFrameY = height * this.frameY;
-        const x = canvas.width - this.x;
-        const y = this.y;
+    //     const sprite = this.sprite;
+    //     const width = this.width;
+    //     const height = this.height;
+    //     const widthFrameX =  width * this.frameX;
+    //     const heightFrameY = height * this.frameY;
+    //     const x = ui.canvas.width - this.x;
+    //     const y = this.y;
 
-        this.sprite.onload = function() {
-            ctx.drawImage(enemy, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
-        }
-    }
+    //     this.sprite.onload = function() {
+    //         ui.ctx.drawImage(sprite, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
+    //     }
+    // }
 
     // shoot() {
     //     if (frame % 2 == 0 && player.frameX <= 4) {

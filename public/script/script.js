@@ -1,153 +1,58 @@
+
 class UI {
+  static CANVAS_WIDTH = 1200;
+  static CANVAS_HEIGHT = 400;
+
   constructor() {
-    console.log("HELLOOOO")
-    const CANVAS_WIDTH = 1200;
-    const CANVAS_HEIGHT = 400;
-  
-    const bgCanvas = document.getElementById("backgroundCanvas");
-    const bgCtx = backgroundCanvas.getContext("2d");
-  
-    const canvas = document.getElementById("actionCanvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
+    this.bgCanvas = document.getElementById("backgroundCanvas");
+    this.canvas = document.getElementById("actionCanvas");
+    this.bgCtx = this.bgCanvas.getContext("2d");
+    this.ctx = this.canvas.getContext("2d");
+    
+    this.bgCanvas.width = UI.CANVAS_WIDTH;
+    this.bgCanvas.height = UI.CANVAS_HEIGHT;
+    this.canvas.width = UI.CANVAS_WIDTH;
+    this.canvas.height = UI.CANVAS_HEIGHT;
+    this.background = new Image(60, 45);
+    this.background.src = "./img/background1.png";
+    this.background.onload = this.drawBackground.bind(this);
+
+    this.screenManager = ScreenManager.getInstance();
+    this.screenManager.show_screen(screensEnum.MenuScreen);
+    
+
 
   }
-}
 
-UI()
-// const CANVAS_WIDTH = 1200;
-// const CANVAS_HEIGHT = 400;
-
-// const bgCanvas = document.getElementById("backgroundCanvas");
-// const bgCtx = backgroundCanvas.getContext("2d");
-
-// const canvas = document.getElementById("actionCanvas");
-// const ctx = canvas.getContext("2d");
-// canvas.width = CANVAS_WIDTH;
-// canvas.height = CANVAS_HEIGHT;
-
-const FRAMES_PER_SECOND = 60;
-const TRY_AGAIN = 0;
-const BRONZE_SCORE = 4;
-const SILVER_SCORE = 8;
-const GOLD_SCORE = 14;
-const DIAMOND_SCORE = 20;
-const LEGENDARY_SCORE = 30;
-const GAME_OVER_MSG_Y = canvas.height / 3;
-
-const background = new Image(60, 45);
-background.src = "./img/background1.png";
-
-function drawBackground() {
-  canvas.width = this.naturalWidth;
-  canvas.height = this.naturalHeight;
-  bgCanvas.width = this.naturalWidth;
-  bgCanvas.height = this.naturalHeight;
-  bgCtx.drawImage(this, 0, 0);
-}
-
-
-const gameOverMsgArray = [
-  "Please, it's not that hard. Press 'E' to take cover!",
-  " points. You belong in the bronze bracket.",
-  " point(s). Stuck in silver forever.",
-  " points. Not too bad. One day you'll hit the diamond league.",
-  " points. A solid diamond player. You have potential.",
-  " points. Legendary! But are you good enough to be IMMORTAL?",
-  " points. IMMORTAL! Your skills are unmatched!",
-];
-
-var gameOverMsg, msgIndex, metrics, textWidth;
-
-function handleGameOver() {
- 
-  for (let i = 0; i < bulletArray.length; i++) {
-    if (bulletArray[i].x > 50 && bulletArray[i].x < 150 && player.hitbox) {
-      ctx.font = "35px Georgia";
-
-      ctx.fillStyle = "#a0d2eb";
-
-      if (score == TRY_AGAIN) {
-        msgIndex = 0; 
-      } else if (score < BRONZE_SCORE) {
-        msgIndex = 1; 
-      } else if (score < SILVER_SCORE) {
-        msgIndex = 2; 
-      } else if (score < GOLD_SCORE) {
-        msgIndex = 3; 
-      } else if (score < DIAMOND_SCORE) {
-        msgIndex = 4; 
-      } else if (score < LEGENDARY_SCORE) {
-        msgIndex = 5; 
-      } else {
-        msgIndex = 6; 
-      }
-      getTextMessage(msgIndex); 
-      return true;
-    }
+  drawBackground() {   
+    this.canvas.width = this.background.naturalWidth;
+    this.canvas.height = this.background.naturalHeight;
+    this.bgCanvas.width = this.background.naturalWidth;
+    this.bgCanvas.height = this.background.naturalHeight;
+    this.bgCtx.drawImage(this.background, 0, 0);
   }
-}
 
-//returns the coordinates for the message to be printed out in the centre of the canvas
-function getCentreTextPosition(msg) {
-  metrics = ctx.measureText(msg);
-  textWidth = metrics.width;
-  return (canvas.width - textWidth)/2;
-}
-
-//prints the game over message on the canvas
-function getTextMessage(index) {
-  gameOverMsg = gameOverMsgArray[index];
-  if (score > 0) {
-    gameOverMsg = score + " " + gameOverMsg;
-  }
-  ctx.fillText(
-    gameOverMsg,
-    getCentreTextPosition(gameOverMsg),
-    GAME_OVER_MSG_Y
-  );
-}
-
-function addStartButton() {
-  const startButton = document.getElementById("startGame");
-  startButton.addEventListener("click", function() {
-    startButton.style.display="none";
-    addPauseButton();
-    gameSession.startGame(ctx);
-  });
-}
-
-function addPauseButton() {
-  const pauseButton = document.getElementById("pauseGame");
-  pauseButton.style.display="block";
-  pauseButton.addEventListener("click", function() {
-    const startButton = document.getElementById("startGame");
-    startButton.style.display="block";
-    pauseButton.style.display="none";
-    console.log("Pausing the game");
-    gameSession.pause();
-  });
-}
   
+  // let startButton = document.createElement("button");
+// startButton.setAttribute("class", "btn btn-info");
+// startButton.setAttribute("id", "startGame");
+// startButton.innerHTML = "Start Game";
+// document.getElementById("startButtonHere").appendChild(startButton);
+}
+
   // ctx.fillStyle = scoreGradient;
   // ctx.font = "90px Georgia";
   // ctx.fillText(score, getCentreTextPosition(score), 70);
 
-  // requestAnimationFrame(onLoad);
 
 function onLoad() {
+  const ui = new UI();
   getLeaderboard();
-  addStartButton();
-  background.onload = drawBackground;
-
+  const gameSession = GameSession.getInstance();
+  gameSession.setupGameEnvironment(ui);
   // bufferCtx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  gameSession = GameSession.getInstance();
-  gameSession.setupGameEnvironment(ctx);
   // gameSession.setupPlayerAndEnemy(ctx);
 }
-
-
 
 // async function updateScores() {
 //   try {
@@ -225,26 +130,6 @@ function onLoad() {
 // //   }
 // // }
 
-// function animate() {
-//   now = Date.now();
-//   elapsed = now - then;
-//   // shootBullet();
-//   if (elapsed > fpsInterval) {
-//     frame++;
-//     // console.log("frame " + frame);
-//     then = now - (elapsed % fpsInterval);
-    
-//     handleInjury();
-//     if (handleInjury()) return;
-//   }
-//   if (spacePressed) {
-//       player.takeCover(frame);
-//       if ((frame - player.frameTakeCoverComplete) >= player.frames_in_cover) {
-//         player.exitCover(frame);
-//       }
-//     }
-//   requestAnimationFrame(animate);
-// }
 
 async function getLeaderboard() {
   const response = await fetch("/get-leaderboard", {

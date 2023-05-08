@@ -2,45 +2,49 @@ let spacePressed;
 
 window.addEventListener("keydown", function (e) {
   if (e.code === "KeyE") {
-    console.log("PRESSED", e.code)
     spacePressed = true;
   }
 });
 
 class GameSession {
   
+  FRAMES_PER_SECOND = 60;
+  static instance; 
+  
   constructor() {
     this.gameInProgress = true;
     this.paused = false;
     this.player;
     this.enemy;
-    this.framePeriod = 1000/FRAMES_PER_SECOND;
+    this.framePeriod = 1000/GameSession.FRAMES_PER_SECOND;
     this.frameNum = 0;
     this.start;
     this.previousTimeStamp;
-    // this.frameNum = 0;
+
+    //BAD UI REFERENCE
+    this.ui;
   }
 
   static getInstance() {
-    if (!this.instance) {
-      this.instance = new GameSession();
+    if (!GameSession.instance) {
+      GameSession.instance = new GameSession();
     }
-    return this.instance;
+    return GameSession.instance;
   }
 
-  setupGameEnvironment(ctx) {
+  setupGameEnvironment(ui) {
     this.player = new Player();
     this.enemy = new Enemy();
     
-    this.player.drawSprite(ctx);
-    this.enemy.drawSprite(ctx);
+    this.player.drawSprite(ui, true);
+    this.enemy.drawSprite(ui);
+    this.ui = ui;
   }
 
-  startGame(ctx) {
-    console.log("Starting/resuming game.");
-    console.log("Gamesession object", this);
+  startGame() {
     this.paused = false;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    console.log("Started the game!");
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -61,15 +65,12 @@ class GameSession {
       }
     }
     
-    this.player.drawSprite(ctx);
+    this.player.drawSprite(this.ui.ctx);
 
-    // console.log(elapsed)
     // shootBullet();
     // if (elapsed > this.framePeriod) {
     //   this.frameNum++;
-    //   // console.log("frame " + frame);
     //   startTime = now - (elapsed % framePeriod);
-    //   console.log("frame:", this.frameNum)
     //   // handleInjury();
     //   // if (handleInjury()) return;
     // }
@@ -83,7 +84,6 @@ class GameSession {
   }
 
   // startGame() {
-  //   console.log("Starting/resuming game.");
   //   paused = false;
   //   this.myMove();
   // }
@@ -95,14 +95,12 @@ class GameSession {
   //   const player = this.player;
   //   player.drawSprite(ctx);
 
-  //   console.log(paused)
   //   function frame() {
 
   //     if (paused) {
   //       clearInterval(id);
   //     } else {
   //       frameNum++;
-  //       console.log(frameNum)
   //       if (spacePressed) {
   //         player.takeCover(frameNum, ctx);
   //       }
@@ -117,7 +115,6 @@ class GameSession {
   pause() {
     this.paused = true;
     this.gameInProgress = false;
-    // console.log("PAUSED", this.paused)
   }
 
   
@@ -197,11 +194,7 @@ class GameSession {
 //   );
 // }
 
-// let startButton = document.createElement("button");
-// startButton.setAttribute("class", "btn btn-info");
-// startButton.setAttribute("id", "startGame");
-// startButton.innerHTML = "Start Game";
-// document.getElementById("startButtonHere").appendChild(startButton);
+
 
 // function onLoad() {
 //   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);

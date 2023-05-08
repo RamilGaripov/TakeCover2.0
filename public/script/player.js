@@ -23,21 +23,6 @@ class Player extends GameObject {
     this.sprite.src = "./img/bubbles.png";    
   };
 
-  drawSprite(ctx) {
-    const player = this.sprite;
-    const width = this.width;
-    const height = this.height;
-    const widthFrameX =  width * this.frameX;
-    const heightFrameY = height * this.frameY;
-    const x = this.x;
-    const y = this.y;
-
-    this.sprite.onload = function() {
-      ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
-    }
-    ctx.drawImage(player, widthFrameX, heightFrameY,  width, height,  x, y, width, height);
-  }
-
   takeCover(frame, ctx) {
     if (frame % 2 == 0 && this.frameX <= 4) {
       this.frameX++;
